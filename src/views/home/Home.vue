@@ -7,15 +7,18 @@
         </div>
       </template>
     </nav-bar>
+    <recommend-view :recommends="recommends" />
   </div>
 </template>
 <script>
 import NavBar from 'components/common/navbar/NavBar'
+import RecommendView from './childComponents/RecommendView.vue'
 import {getHomeMultidata} from 'network/home.js'
 export default {
   name: 'Home',
   components: {
-    NavBar
+    NavBar,
+    RecommendView
   },
   data() {
     return {
