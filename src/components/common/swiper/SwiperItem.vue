@@ -1,18 +1,22 @@
 <template>
-  <div class='swiper-item'></div>
+  <div class="slide">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'SwiperItem',
-  data(){
-    return {}
-  },
-  components: {},
-  created(){},
-  mounted(){},
-  methods: {}
-}
+	export default {
+		name: "Slide"
+	}
 </script>
-<style lang='scss' scoped>
+
+<style scoped>
+  .slide {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .slide img {
+    width: 100%;
+  }
 </style>

@@ -7,18 +7,28 @@
         </div>
       </template>
     </nav-bar>
+    <swiper>
+      <swiper-item v-for="(item, index) in banners" :key="index">
+        <a :href="item.link">
+          <img :src="item.image" alt="" >
+        </a>
+      </swiper-item>
+    </swiper>
     <recommend-view :recommends="recommends" />
   </div>
 </template>
 <script>
 import NavBar from 'components/common/navbar/NavBar'
 import RecommendView from './childComponents/RecommendView.vue'
+import {Swiper, SwiperItem} from 'components/common/swiper/index.js'
 import {getHomeMultidata} from 'network/home.js'
 export default {
   name: 'Home',
   components: {
     NavBar,
-    RecommendView
+    RecommendView,
+    Swiper,
+    SwiperItem
   },
   data() {
     return {
