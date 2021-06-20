@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "core-js": "^3.6.5",
     "normalize.css": "^8.0.1",
+    "sass-loader": "^12.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.0.1"
   },
