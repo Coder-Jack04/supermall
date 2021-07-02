@@ -10,6 +10,8 @@
     <swiper-view :banners="banners"></swiper-view>
     <recommend-view :recommends="recommends" />
     <feature-view></feature-view>
+    <tab-control :titles="['流行', '新款', '精选']"></tab-control>
+
     <ul>
       <li>1</li>
       <li>2</li>
@@ -120,6 +122,7 @@ import RecommendView from './childComponents/RecommendView.vue'
 import SwiperView from './childComponents/SwiperView.vue'
 import FeatureView from './childComponents/FeatureView.vue'
 
+import TabControl from 'components/content/TabControl.vue'
 
 import {getHomeMultidata} from 'network/home.js'
 export default {
@@ -128,7 +131,8 @@ export default {
     NavBar,
     RecommendView,
     SwiperView,
-    FeatureView
+    FeatureView,
+    TabControl
   },
   data() {
     return {
