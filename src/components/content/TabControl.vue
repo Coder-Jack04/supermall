@@ -25,6 +25,7 @@ export default {
   methods: {
     btnClick(index) {
       this.currentIndex = index;
+      this.$emit('tabClick', index)
     }
   }
 }
@@ -38,7 +39,8 @@ export default {
     font-size: 15px;
     background-Color: #fff;
     position: sticky;
-    top: 44px
+    top: 44px;
+    z-index: 9;
   }
   .tab-control-item {
     flex: 1;
