@@ -108,7 +108,7 @@
   </div>
 </template>
 <script>
-import Bscroll from '@better-scroll/core'
+import Bscroll from 'better-scroll'
 export default {
   name: 'Category',
   data() {
@@ -118,6 +118,14 @@ export default {
   },
   mounted() {
     this.bs = new Bscroll(".wrapper", {
+      probeType: 3,
+      pullUpLoad: true
+    }),
+    this.bs.on('scroll', (position) => {
+      // console.log(position);
+    }),
+    this.bs.on('pullingUp', () => {
+      console.log('上拉加载更多');
     })
   },
 }
@@ -128,5 +136,6 @@ export default {
     height: 200px;
     background-color: #f00;
     /* overflow: scroll; */
+    overflow: hidden;
   }
 </style>

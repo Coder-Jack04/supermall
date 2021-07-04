@@ -7,22 +7,31 @@
         </div>
       </template>
     </nav-bar>
-    <swiper-view :banners="banners"></swiper-view>
-    <recommend-view :recommends="recommends" />
-    <feature-view></feature-view>
-    <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick"></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" class="tab-control" v-show="isshowTop" ref="tabcontrol1"></tab-control>
+    <scroll class="content" ref="scroll" @scroll="contentScroll" @pullingUp="loadmore">
+      <swiper-view :banners="banners" @swiperImgLoad="imgLoad"></swiper-view>
+      <recommend-view :recommends="recommends" />
+      <feature-view></feature-view>
+      <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabcontrol2"></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
+    </scroll>
+    <back-top @click.native="backTop" v-show="isshowBT"/>
   </div>
 </template>
 <script>
-import NavBar from 'components/common/navbar/NavBar'
+
 import RecommendView from './childComponents/RecommendView.vue'
 import SwiperView from './childComponents/SwiperView.vue'
 import FeatureView from './childComponents/FeatureView.vue'
+
+import NavBar from 'components/common/navbar/NavBar'
 import GoodsList from 'components/content/GoodsList.vue'
 import TabControl from 'components/content/TabControl.vue'
+import BackTop from 'components/content/BackTop.vue'
+import Scroll from 'components/common/scroll/Scroll.vue'
 
 import {getHomeMultidata, getHomeData} from 'network/home.js'
+import {debounce} from 'common/utils.js'
 export default {
   name: 'Home',
   components: {
@@ -31,7 +40,9 @@ export default {
     SwiperView,
     FeatureView,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -42,7 +53,10 @@ export default {
         'new': {page: 0, list: []},
         'sell': {page: 0, list: []},
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isshowBT: false,
+      TabControlOffset: 0,
+      isshowTop: false,
     }
   },
   computed: {
@@ -57,7 +71,30 @@ export default {
     this.getHomeData('sell')
 
   },
+  mounted() {
+    let refresh = debounce(this.$refs.scroll.refresh, 200)
+    this.$bus.$on('itemImgLoad', () => {
+      refresh()
+    })
+  },
   methods: {
+    imgLoad() {
+      this.TabControlOffset = this.$refs.tabcontrol2.$el.offsetTop
+    },
+    loadmore() {
+      // console.log('上拉加载更多');
+      this.getHomeData(this.currentType);
+    },
+    contentScroll(position) {
+      // 显示回到顶部按钮
+      this.isshowBT = (-position.y) > 1000;
+      // 控制吸顶效果
+      this.isshowTop = (-position.y) > this.TabControlOffset
+    },
+    backTop() {
+      // console.log(111);
+      this.$refs.scroll.scrollTo(0, 0)
+    },
     getHomeMultidata() {
       getHomeMultidata().then(res => {
         console.log(res);
@@ -70,6 +107,7 @@ export default {
       getHomeData(type, page).then(res => {
         this.goods[type].list.push(...res.data.data.list)
         this.goods[type].page += 1
+        this.$refs.scroll.finishPullUp()
       })
     },
     tabClick(index) {
@@ -84,6 +122,8 @@ export default {
           this.currentType = 'sell'
           break
       }
+      this.$refs.tabcontrol1.currentIndex = index;
+      this.$refs.tabcontrol2.currentIndex = index;
     }
   },
 }
@@ -91,6 +131,8 @@ export default {
 <style scoped>
   #home {
     padding-top: 44px;
+    position: relative;
+    height: 100vh;
   }
   .nav-bar {
     background-color: var(--color-tint);
@@ -100,5 +142,15 @@ export default {
     left: 0px;
     right: 0px;
     z-index: 5;
+  }
+  .content {
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+  }
+  .tab-control {
+    position: relative;
+    z-index: 10;
   }
 </style>
