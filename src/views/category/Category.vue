@@ -130,7 +130,7 @@ export default {
   },
 }
 </script>
-<style scope>
+<style scoped>
   .wrapper {
     /* 原生实现部分滚动 */
     height: 200px;

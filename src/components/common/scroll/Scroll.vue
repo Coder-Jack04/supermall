@@ -43,6 +43,9 @@ export default {
     },
     refresh() {
       this.scroll.refresh()
+    },
+    getSaveY() {
+      return this.scroll.y
     }
   },
 }

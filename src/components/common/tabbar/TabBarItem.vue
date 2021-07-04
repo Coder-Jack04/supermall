@@ -35,7 +35,7 @@ export default {
 }
 </script>
 <style scoped>
-   .tab-bar .tab-bar-item {
+  .tab-bar .tab-bar-item {
       flex: 1;
    }
   .tab-bar .tab-bar-item img {

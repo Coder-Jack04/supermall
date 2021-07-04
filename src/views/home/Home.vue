@@ -57,6 +57,7 @@ export default {
       isshowBT: false,
       TabControlOffset: 0,
       isshowTop: false,
+      saveY: 0
     }
   },
   computed: {
@@ -76,6 +77,15 @@ export default {
     this.$bus.$on('itemImgLoad', () => {
       refresh()
     })
+  },
+  // 通过导航守卫来监听路由的跳转
+  activated() {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getSaveY()
+    // console.log(this.saveY);
   },
   methods: {
     imgLoad() {
@@ -97,7 +107,6 @@ export default {
     },
     getHomeMultidata() {
       getHomeMultidata().then(res => {
-        console.log(res);
         this.banners = res.data.data.banner.list
         this.recommends = res.data.data.recommend.list
       })

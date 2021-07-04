@@ -1,5 +1,5 @@
 <template>
-  <div class='goods-list-Item'>
+  <div class='goods-list-Item' @click="itemClick">
     <img :src="goodsItem.show.img" alt="" @load="imgLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
@@ -29,6 +29,10 @@ export default {
   methods: {
     imgLoad() {
       this.$bus.$emit('itemImgLoad')
+    },
+    itemClick() {
+      // 监听点击, 然后跳转路由, 并且在跳转路由的时候要传递参数
+      this.$router.push('/detail/' + this.goodsItem.iid)
     }
   }
 }
