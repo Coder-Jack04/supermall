@@ -23,7 +23,7 @@ export default {
       click: true,
       pullUpLoad: true,
       // 通过事件总线的方法去解决滚动存在的问题
-      // observeImage: true,
+      observeImage: true,
     })
     //监听滚动的位置
     this.scroll.on('scroll', position => {
