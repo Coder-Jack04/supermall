@@ -27,11 +27,12 @@ import FeatureView from './childComponents/FeatureView.vue'
 import NavBar from 'components/common/navbar/NavBar'
 import GoodsList from 'components/content/GoodsList.vue'
 import TabControl from 'components/content/TabControl.vue'
-import BackTop from 'components/content/BackTop.vue'
+
 import Scroll from 'components/common/scroll/Scroll.vue'
 
 import {getHomeMultidata, getHomeData} from 'network/home.js'
 import {debounce} from 'common/utils.js'
+import {backTopMixin} from 'common/mixin.js'
 export default {
   name: 'Home',
   components: {
@@ -42,8 +43,9 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop
+    
   },
+  mixins: [backTopMixin],
   data() {
     return {
       banners: [],
@@ -54,7 +56,7 @@ export default {
         'sell': {page: 0, list: []},
       },
       currentType: 'pop',
-      isshowBT: false,
+      
       TabControlOffset: 0,
       isshowTop: false,
       saveY: 0
@@ -101,10 +103,7 @@ export default {
       // 控制吸顶效果
       this.isshowTop = (-position.y) > this.TabControlOffset
     },
-    backTop() {
-      // console.log(111);
-      this.$refs.scroll.scrollTo(0, 0)
-    },
+
     getHomeMultidata() {
       getHomeMultidata().then(res => {
         this.banners = res.data.data.banner.list

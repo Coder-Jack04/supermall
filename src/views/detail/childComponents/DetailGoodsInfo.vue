@@ -7,7 +7,7 @@
     </div>
     <div class="info-key">{{goodsInfo.detailImage[0].key}}</div>
     <div class="info-list">
-      <img v-for="(item, index) in goodsInfo.detailImage[0].list" :key="index" :src="item" alt="">
+      <img v-for="(item, index) in goodsInfo.detailImage[0].list" :key="index" :src="item" alt="" @load="imgLoad">
     </div>
   </div>
 </template>
@@ -29,7 +29,11 @@ export default {
   components: {},
   created(){},
   mounted(){},
-  methods: {}
+  methods: {
+    imgLoad() {
+      this.$emit('detailImgLoad')
+    }
+  }
 }
 </script>
 <style scoped>

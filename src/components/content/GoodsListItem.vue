@@ -1,6 +1,6 @@
 <template>
-  <div class='goods-list-Item' @click="itemClick">
-    <img :src="goodsItem.show.img" alt="" @load="imgLoad">
+  <div class='goods-list-Item' @click="itemClick" v-if="Object.keys(goodsItem).length !== 0">
+    <img :src="showImg" alt="" @load="imgLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -23,9 +23,11 @@ export default {
       }
     }
   },
-  components: {},
-  created(){},
-  mounted(){},
+  computed: {
+    showImg() {
+      return this.goodsItem.image || this.goodsItem.show.img
+    }
+  },
   methods: {
     imgLoad() {
       this.$bus.$emit('itemImgLoad')
