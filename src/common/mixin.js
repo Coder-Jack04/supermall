@@ -10,7 +10,7 @@ export const backTopMixin = {
   },
   methods: {
     backTop() {
-      // console.log(111);
+      console.log(111);
       this.$refs.scroll.scrollTo(0, 0)
     },
   },

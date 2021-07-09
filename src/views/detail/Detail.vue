@@ -11,7 +11,7 @@
       <goods-list :goods="recommendData" ref="recommend"></goods-list>
     </scroll>
     <back-top @click.native="backTop" v-show="isshowBT"/>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addProduct="addToCart"></detail-bottom-bar>
   </div>
 </template>
 
@@ -84,7 +84,15 @@ export default {
       if (data.rate.cRate.length !== 0) {
         this.commentsInfo = data.rate.list[0]
       }
-      this.debounceFunc = debounce(() => {
+    })
+    // 获取推荐数据
+    getRecommendData().then(res => {
+      // console.log(res);
+      this.recommendData = res.data.data.list
+    })
+  },
+  mounted(){
+    this.debounceFunc = debounce(() => {
         this.$nextTick(() => {
         this.titleTopY = []
         this.titleTopY.push(0);
@@ -94,17 +102,9 @@ export default {
         this.titleTopY.push(Number.MAX_VALUE)
         }) 
       }, 200)
-    }) 
-    // 获取推荐数据
-    getRecommendData().then(res => {
-      // console.log(res);
-      this.recommendData = res.data.data.list
-    })
   },
-  mounted(){
-  },
-  updated() {
-   
+  destroyed() {
+    this.$bus.$emit('detailDestroyed')
   },
   methods: {
     titleClick(index) {
@@ -126,6 +126,15 @@ export default {
       // 显示回到顶部按钮
            
       this.isshowBT = (-position.y) > 1000;
+    },
+    addToCart() {
+      const product = {};
+      product.img = this.topImg[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.lowNowPrice;
+      product.iid = this.iid;
+      this.$store.dispatch('addToCart', product)
     }
   }
 }
